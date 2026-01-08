@@ -102,7 +102,7 @@ nav a:hover {
     /* leave vertical space so the fixed header doesn't cover content
        the hero's content will start below the SVG which sits visually at top */
     padding-top: 40vh;
-    min-height: 60vh;
+    min-height: 100vh;
     overflow: visible;
 }
 
@@ -262,6 +262,7 @@ nav a:hover {
 /* Section Projet */
 .section-projet {
     position: relative;
+    margin-top: 200px;
     padding: 88px 56px 80px;
 }
 
@@ -279,13 +280,16 @@ nav a:hover {
     font-weight: 900;
     font-size: 36px;
     color: #578a22;
-    text-align: center;
-    margin-bottom: 109px;
+    text-align: left;
+    margin-bottom: 20px;
+    max-width: 1328px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .team-title {
-    margin-top: 576px;
-    margin-bottom: 131px;
+    margin-top: 100px;
+    margin-bottom: 40px;
 }
 
 .description-text {
@@ -377,7 +381,8 @@ nav a:hover {
 /* Section Règles */
 .section-regles {
     position: relative;
-    padding: 88px 56px 80px;
+    margin-top: 100px;
+    padding: 100px 56px 80px;
 }
 
 .rules-text,
@@ -405,8 +410,8 @@ nav a:hover {
 }
 
 .benefits-title {
-    margin-top: 562px;
-    margin-bottom: 137px;
+    margin-top: 80px;
+    margin-bottom: 20px;
 }
 
 /* Responsive Design */
