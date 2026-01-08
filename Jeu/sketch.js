@@ -48,6 +48,8 @@ function preload() {
   bgImg = loadImage('../assets/background.svg');
   // Sol ///////////////////////////////////////////////////////////////////////////////////////////////
   floorImg = loadImage('../assets/1er-plan.svg');
+  // Fronde
+  frondeImg = loadImage('../assets/fronde.svg');
 
 }
 
@@ -381,9 +383,9 @@ function squatDetected() {
 
 function drawCannon() {
   // Dessiner le canon (point A) en jaune
-  fill(255, 255, 0);
-  noStroke();
-  circle(cannonPos.x, cannonPos.y, 30);
+  let frondeSprite = new Sprite(cannonPos.x+100, cannonPos.y-200, 0, 0, 'static');
+  frondeSprite.img = frondeImg;
+  frondeSprite.collider = "none";
 
   // Ligne de visée vers le poignet GAUCHE détecté (depuis bodyPose)
   if (poses.length > 0) {
