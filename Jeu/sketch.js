@@ -12,24 +12,30 @@ let poses = [];
 let connections;
 let previousPose = null;
 let squatInProgress = false;
-let squatCount = 15000;
+let squatCount = 0; // Nombre de squats effectués
 let minHipY = 999999; // Pour suivre la position la plus basse
 let maxHipY = 0; // Pour suivre la position la plus haute
 let squatStartTime = 0; // Pour tracker le temps de la descente
+let levelStarted = false;
 
 // Variables pour le tir
 let cannonPos; // Point A - Position fixe du canon
 let projectiles = []; // Liste des projectiles tirés
 let canShoot = true; // Pour éviter le tir en rafale
 let floorSprite; // Sprite pour le sol
-let boisSprite1; // Sprite bois à 90°
-let boisSprite2; // Sprite bois à 0°
+let boisSprites = []; // Tableau de tous les sprites de bois
 let boisImg; // Image SVG du bois
 
 // Variables pour la détection de main
 let handPose;
 let hands = [];
 let modelsLoaded = false;
+
+
+// Variable de jeu
+let level = 1;
+let life = 3;
+let ennemies = [];
 
 function preload() {
   // Load the bodyPose model
@@ -64,19 +70,88 @@ function setup() {
   floorSprite.color = color(101, 67, 33);
   floorSprite.stroke = 'none';
   
-  // Créer les sprites de bois avec le SVG
-  boisSprite1 = new Sprite(width/2 - 200, height - 300, 100, 100);
-  boisSprite1.img = boisImg;
-  boisSprite1.rotation = 90; // Rotation à 90°
+  // // Attendre que l'image soit chargée avant de créer le château
+  // if(boisImg.width > 0){
+  //   setupLevel1();
+  // }
   
-  boisSprite2 = new Sprite(width/2 + 200, height - 300, 100, 100 );
-  boisSprite2.img = boisImg;
-  boisSprite2.rotation = 0; // Rotation à 0°
-  
-  console.log("✅ Setup terminé - Modèles en cours de chargement...");
   modelsLoaded = true;
-  world.gravity.y = 10;
+  world.gravity.y = 10;  
 }
+
+function setBoisVertical(x, y){
+  let bois = new Sprite(x, y, boisImg.width, boisImg.height, 'd');
+  if(boisImg && boisImg.width > 0){
+    bois.img = boisImg;
+  } else {
+    bois.color = color(139, 69, 19); // Marron si pas d'image
+  }
+  bois.rotation = 0;
+  bois.mass = 0.5;
+  bois.bounciness = 0.3;
+  return bois;
+}
+
+function setBoisHorizontal(x, y){
+  let bois = new Sprite(x, y, boisImg.width, boisImg.height, 'd');
+  if(boisImg && boisImg.width > 0){
+    bois.img = boisImg;
+  } else {
+    bois.color = color(139, 69, 19); // Marron si pas d'image
+  }
+  bois.rotation = 90;
+  bois.mass = 0.5;
+  bois.debug = true;
+  return bois;
+}
+
+function setupLevel1(){
+  // Créer un château avec plusieurs étages
+  let centerX = width/2 + 200;
+  let baseY = height - 295;
+  
+  // Base: 2 piliers verticaux
+  boisSprites.push(setBoisVertical(centerX - 79, baseY));
+  boisSprites.push(setBoisVertical(centerX + 79, baseY));
+  
+  // Premier étage: plateforme horizontale
+  boisSprites.push(setBoisHorizontal(centerX, baseY - 80));
+
+  // Rajout de l'énemies
+  addEnemies(width/2 + 200,height - 400  );
+
+  
+}
+
+
+function setupLevel2(){
+  // Créer un château avec plusieurs étages
+  let centerX = width/2 + 200;
+  let baseY = height - 295;
+  
+  // Base: 2 piliers verticaux
+  boisSprites.push(setBoisVertical(centerX - 79, baseY));
+  boisSprites.push(setBoisVertical(centerX + 79, baseY));
+  
+  // Premier étage: plateforme horizontale
+  boisSprites.push(setBoisHorizontal(centerX, baseY - 80));
+
+  // Rajout de l'énemies
+  addEnemies(width/2 + 200,height - 400  );
+  addEnemies(width/2 + 200,height - 200  );
+}
+
+
+function addEnemies(x,y){
+  // Ajouter des ennemis (cercles rouges) sur le château
+  let enemy = new Sprite(x, y, 30);
+  enemy.color = color(255, 0, 0);
+  enemy.mass = 1;
+  ennemies.push(enemy);
+}
+
+
+
 
 function windowResized() {
   // Adapter le canvas à la nouvelle taille de la fenêtre
@@ -106,6 +181,8 @@ function draw() {
   
   // Mettre à jour les projectiles (p5play les dessine automatiquement)
   updateProjectiles();
+  updateLevel();
+
   
   // Gérer la détection
   if(poses.length > 0){
@@ -136,7 +213,9 @@ function drawGameEnvironment(){
   fill(255);
   textSize(24);
   textAlign(LEFT);
-  text("Munitions: " + squatCount, 20, 40);
+  text("Ammo: " + squatCount, 20, 40);
+  text("Ennemies: " + ennemies.length, 20, 70);
+  text("Level: " + level, 20, 100);
 }
 
 function drawCameraMiniature(){
@@ -390,7 +469,7 @@ function shoot(){
       projectile.color = color(255, 100, 0);
       projectile.vel.x = direction.x * powerCoef;
       projectile.vel.y = direction.y * powerCoef;
-      projectile.life = 300; // Durée de vie en frames
+      projectile.life = 800; // Durée de vie en frames
       
       projectiles.push(projectile);
       console.log("🔫 TIR! Puissance: " + Math.round(powerCoef) + " | Distance: " + Math.round(distance));
@@ -412,12 +491,27 @@ function updateProjectiles(){
     let p = projectiles[i];
     
     
-    
-    // // Supprimer si hors écran ou durée de vie écoulée
-    // if(p.y > height || p.x < 0 || p.x > width || p.life <= 0){
-    //   p.remove(); // Retirer le sprite
-    //   projectiles.splice(i, 1);
-    // }
+    // Supprimer si hors écran ou durée de vie écoulée
+    p.life--;
+    if(p.y > height + 100 || p.x < -100 || p.x > width + 100 || p.life <= 0){
+      p.remove();
+      projectiles.splice(i, 1);
+    }
+
+    if(ennemies.length > 0){
+      for(let j = ennemies.length - 1; j >= 0; j--){
+        let e = ennemies[j];
+        // Vérifier la collision entre le projectile et l'ennemi
+        if(p.collides(e)){
+          // Supprimer l'ennemi et le projectile
+          e.remove();
+          ennemies.splice(j, 1);
+          p.remove();
+          projectiles.splice(i, 1);
+          break; // Sortir de la boucle ennemis
+        }
+      }
+      }
   }
 }
 
@@ -433,7 +527,30 @@ function gotHands(results) {
   hands = results;
 }
 
+function updateLevel(){
 
 
+  if(ennemies.length === 0 && levelStarted){
+    boisSprites.forEach(bois => bois.remove());
+    boisSprites = [];
+    projectiles.forEach(p => p.remove());
+    projectiles = [];
+    level++;
+    levelStarted = false;
+  }
 
+  if(level === 1 && !levelStarted){
+    setupLevel1();
+    levelStarted = true;
+  }
+
+  if(level === 2 && !levelStarted){
+    setupLevel2();
+    levelStarted = true;
+  }
+
+  
+
+
+}
 
