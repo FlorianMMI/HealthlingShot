@@ -1,0 +1,478 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #efe9b0;
+    color: #343330;
+    overflow-x: hidden;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 102px;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 34px 14px 34px 14px;
+    z-index: 1000;
+    background-color: transparent;
+    border-bottom: 1px solid #343330;
+}
+
+.logo {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    color: #343330;
+}
+
+nav {
+    display: flex;
+    gap: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav a {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    color: #343330;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.cta-button {
+    background-color: #578a22;
+    border: 1px solid #343330;
+    color: #efe9b0;
+    padding: 11px 23px;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.cta-button:hover {
+    background-color: #6a9e2a;
+}
+
+.header-line {
+    display: none;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 870px;
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 870px;
+}
+
+.background-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Tree */
+.tree {
+    position: absolute;
+    left: 265px;
+    top: 374px;
+    width: 148px;
+    height: 362px;
+}
+
+.tree-trunk {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #81561B;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.tree-branches {
+    position: absolute;
+    top: 90px;
+    left: -65px;
+    width: 259px;
+    height: 173px;
+    border: 1px solid black;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+/* House */
+.house {
+    position: absolute;
+    left: 443px;
+    top: 228px;
+    width: 227px;
+    height: 114px;
+}
+
+.house-roof {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 113px solid transparent;
+    border-right: 113px solid transparent;
+    border-bottom: 60px solid #E45649;
+    border: 1px solid black;
+}
+
+.house-body {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #C07B1D;
+    border: 1px solid black;
+}
+
+/* Strawberries */
+.strawberries {
+    position: absolute;
+    left: 787px;
+    top: 370px;
+    width: 465px;
+    height: 337px;
+}
+
+.strawberry {
+    position: absolute;
+    width: 142px;
+    height: 110px;
+    background-color: #D98686;
+    border: 1px solid black;
+    border-radius: 60% 60% 50% 50%;
+}
+
+.strawberry-1 {
+    left: 213px;
+    top: 0;
+}
+
+.strawberry-2 {
+    left: 106px;
+    top: 120px;
+}
+
+.strawberry-3 {
+    left: 230px;
+    top: 120px;
+}
+
+.strawberry-4 {
+    left: 0;
+    top: 234px;
+}
+
+.strawberry-5 {
+    left: 106px;
+    top: 230px;
+}
+
+.strawberry-6 {
+    left: 213px;
+    top: 227px;
+}
+
+.strawberry-7 {
+    left: 323px;
+    top: 227px;
+}
+
+/* Hero Text */
+.hero-text {
+    position: absolute;
+    top: 190px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+}
+
+.hero-text h1 {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    color: #343330;
+    margin-bottom: 10px;
+}
+
+.hero-text p {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    color: #343330;
+}
+
+/* Section Projet */
+.section-projet {
+    position: relative;
+    padding: 88px 56px 80px;
+}
+
+.section-title {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    color: #343330;
+    text-align: center;
+    margin-bottom: 135px;
+}
+
+.subsection-title {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    color: #578a22;
+    text-align: center;
+    margin-bottom: 109px;
+}
+
+.team-title {
+    margin-top: 576px;
+    margin-bottom: 131px;
+}
+
+.description-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.5;
+    max-width: 1328px;
+    margin: 0 auto;
+}
+
+.description-text p {
+    margin-bottom: 1em;
+}
+
+/* Team Grid */
+.team-grid {
+    display: flex;
+    justify-content: center;
+    gap: 42px;
+    flex-wrap: wrap;
+    max-width: 1328px;
+    margin: 0 auto;
+}
+
+.team-member {
+    position: relative;
+    width: 220px;
+}
+
+.member-circle-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 220px;
+    background-color: #C46555;
+    border-radius: 50%;
+}
+
+.member-card {
+    position: relative;
+    background-color: #C46555;
+    border-radius: 28px;
+    padding-top: 90px;
+    padding-bottom: 85px;
+    margin-top: 90px;
+    text-align: center;
+}
+
+.member-photo {
+    position: absolute;
+    top: -61px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 151px;
+    height: 151px;
+    background-color: #D9D9D9;
+    border-radius: 50%;
+}
+
+.member-card h4 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #efe9b0;
+    margin-bottom: 18px;
+    line-height: 1.2;
+}
+
+.member-role {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #efe9b0;
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+
+.member-quote {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #efe9b0;
+    padding: 0 8px;
+    line-height: 1.4;
+}
+
+/* Section Règles */
+.section-regles {
+    position: relative;
+    padding: 88px 56px 80px;
+}
+
+.rules-text,
+.benefits-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.5;
+    max-width: 1328px;
+    margin: 0 auto;
+}
+
+.rules-text p,
+.benefits-text p {
+    margin-bottom: 1em;
+}
+
+.rules-text ul {
+    margin-left: 36px;
+    margin-bottom: 1em;
+}
+
+.rules-text li {
+    margin-bottom: 0.5em;
+}
+
+.benefits-title {
+    margin-top: 562px;
+    margin-bottom: 137px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    header {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero {
+        height: 600px;
+    }
+
+    .hero-background {
+        height: 600px;
+    }
+
+    .tree,
+    .house,
+    .strawberries {
+        display: none;
+    }
+
+    .hero-text {
+        top: 150px;
+    }
+
+    .team-grid {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        font-size: 20px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    nav a {
+        font-size: 18px;
+    }
+
+    .cta-button {
+        font-size: 18px;
+        padding: 8px 16px;
+    }
+
+    .hero-text h1 {
+        font-size: 42px;
+    }
+
+    .hero-text p {
+        font-size: 18px;
+    }
+
+    .section-title {
+        font-size: 42px;
+        margin-bottom: 60px;
+    }
+
+    .subsection-title {
+        font-size: 28px;
+        margin-bottom: 50px;
+    }
+
+    .description-text,
+    .rules-text,
+    .benefits-text {
+        font-size: 18px;
+    }
+
+    .team-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .team-title,
+    .benefits-title {
+        margin-top: 100px;
+    }
+}
