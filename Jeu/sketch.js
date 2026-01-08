@@ -22,6 +22,9 @@ let cannonPos; // Point A - Position fixe du canon
 let projectiles = []; // Liste des projectiles tirés
 let canShoot = true; // Pour éviter le tir en rafale
 let floorSprite; // Sprite pour le sol
+let boisSprite1; // Sprite bois à 90°
+let boisSprite2; // Sprite bois à 0°
+let boisImg; // Image SVG du bois
 
 // Variables pour la détection de main
 let handPose;
@@ -33,6 +36,8 @@ function preload() {
   bodyPose = ml5.bodyPose();
   // Load the handPose model (sans options de dessin automatique)
   handPose = ml5.handPose({ flipped: false });
+  // Charger l'image SVG du bois
+  boisImg = loadImage('../assets/bois.svg');
 }
 
 function setup() {
@@ -58,6 +63,15 @@ function setup() {
   floorSprite = new Sprite(width/2, height - 100, width, 200, 's');
   floorSprite.color = color(101, 67, 33);
   floorSprite.stroke = 'none';
+  
+  // Créer les sprites de bois avec le SVG
+  boisSprite1 = new Sprite(width/2 - 200, height - 300, 100, 100);
+  boisSprite1.img = boisImg;
+  boisSprite1.rotation = 90; // Rotation à 90°
+  
+  boisSprite2 = new Sprite(width/2 + 200, height - 300, 100, 100 );
+  boisSprite2.img = boisImg;
+  boisSprite2.rotation = 0; // Rotation à 0°
   
   console.log("✅ Setup terminé - Modèles en cours de chargement...");
   modelsLoaded = true;
