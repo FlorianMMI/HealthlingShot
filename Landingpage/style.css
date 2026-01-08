@@ -12,6 +12,18 @@ body {
     overflow-x: hidden;
 }
 
+/* Smooth scroll for in-page links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Compensate for fixed header when scrolling to anchors */
+section,
+.section-projet,
+.section-regles {
+    scroll-margin-top: 120px;
+}
+
 .container {
     position: relative;
     width: 100%;
@@ -71,10 +83,13 @@ nav a:hover {
     font-size: 24px;
     cursor: pointer;
     white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .cta-button:hover {
     background-color: #6a9e2a;
+    text-decoration: none;
 }
 
 .header-line {
