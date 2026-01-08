@@ -44,6 +44,7 @@ function preload() {
   handPose = ml5.handPose({ flipped: false });
   // Charger l'image SVG du bois
   boisImg = loadImage('../assets/bois.svg');
+  ammoImg = loadImage('../assets/picon_ammo.svg');
 }
 
 function setup() {
@@ -204,16 +205,16 @@ function drawGameEnvironment(){
   background(135, 206, 235); // Bleu ciel
   
   // Le sol est maintenant un sprite p5play
-  // Ligne d'herbe sur le sol
-  fill(34, 139, 34);
+
   noStroke();
-  rect(0, height - 200, width, 20);
+
   
   // Afficher les infos de jeu
   fill(255);
   textSize(24);
   textAlign(LEFT);
-  text("Ammo: " + squatCount, 20, 40);
+  image(ammoImg, 20, 20, 24, 24);
+  text(" x" + squatCount, 50, 40);
   text("Ennemies: " + ennemies.length, 20, 70);
   text("Level: " + level, 20, 100);
 }
