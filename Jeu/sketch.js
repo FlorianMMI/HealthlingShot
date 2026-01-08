@@ -93,11 +93,8 @@ function squatDetected(){
             
             // Position moyenne des hanches (plus Y est grand, plus on est bas)
             let avgHipY = (leftHip.y + rightHip.y) / 2;
-            let avgKneeY = (leftKnee.y + rightKnee.y) / 2;
-            let avgAnkleY = (leftAnkle.y + rightAnkle.y) / 2;
             
-            // Calculer l'angle du genou (approximatif via la distance hanche-cheville)
-            let hipToAnkleDistance = avgAnkleY - avgHipY;
+            
             
             // Mise à jour des extremums avec lissage
             if(!squatInProgress){
@@ -111,9 +108,7 @@ function squatDetected(){
             fill(255, 255, 0);
             textSize(12);
             noStroke();
-            text("Hip Y: " + Math.round(avgHipY), 10, height - 80);
-            text("Knee Y: " + Math.round(avgKneeY), 10, height - 60);
-            text("Hip-Ankle Dist: " + Math.round(hipToAnkleDistance), 10, height - 40);
+            
             text("Squat Count: " + squatCount, 10, height - 20);
             
             // Vérifier si on a une pose précédente
@@ -131,7 +126,7 @@ function squatDetected(){
                 // On détecte quand les hanches descendent significativement
                 if(hipMovement > 3 && !squatInProgress){
                     // Commencer à détecter la descente
-                    if(avgHipY > maxHipY + 30){ // Descente d'au moins 30 pixels
+                    if(avgHipY > maxHipY + 50){ // Descente d'au moins 50 pixels
                         squatInProgress = true;
                         minHipY = avgHipY;
                         console.log("🔽 DESCENTE détectée! Hip Y: " + Math.round(avgHipY));
@@ -144,14 +139,9 @@ function squatDetected(){
                     // Vérifier qu'on remonte après être descendu
                     if(avgHipY < minHipY - 20){ // Remontée d'au moins 20 pixels
                         squatCount++;
-                        console.log("✅ SQUAT COMPLET DÉTECTÉ ! #" + squatCount + " | Hip Y: " + Math.round(avgHipY));
                         squatInProgress = false;
                         maxHipY = avgHipY; // Réinitialiser la position haute
                         
-                        // Flash visuel
-                        fill(0, 255, 0);
-                        textSize(40);
-                        text("✅ SQUAT!", width/2 - 80, height/2);
                     }
                 }
                 
