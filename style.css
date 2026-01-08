@@ -12,6 +12,18 @@ body {
     overflow-x: hidden;
 }
 
+/* Smooth scroll for in-page links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Compensate for fixed header when scrolling to anchors */
+section,
+.section-projet,
+.section-regles {
+    scroll-margin-top: 120px;
+}
+
 .container {
     position: relative;
     width: 100%;
@@ -37,7 +49,7 @@ header {
 .logo {
     font-family: 'Lexend', sans-serif;
     font-weight: 900;
-    font-size: 24px;
+    font-size: 36px;
     color: #343330;
 }
 
@@ -50,8 +62,8 @@ nav {
 
 nav a {
     font-family: 'Lexend', sans-serif;
-    font-weight: 400;
-    font-size: 24px;
+    font-weight: 700;
+    font-size: 28px;
     color: #343330;
     text-decoration: none;
     white-space: nowrap;
@@ -71,10 +83,13 @@ nav a:hover {
     font-size: 24px;
     cursor: pointer;
     white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .cta-button:hover {
     background-color: #6a9e2a;
+    text-decoration: none;
 }
 
 .header-line {
@@ -84,21 +99,29 @@ nav a:hover {
 /* Hero Section */
 .hero {
     position: relative;
-    height: 870px;
-    overflow: hidden;
+    /* leave vertical space so the fixed header doesn't cover content
+       the hero's content will start below the SVG which sits visually at top */
+    padding-top: 40vh;
+    min-height: 100vh;
+    overflow: visible;
 }
 
 .hero-background {
-    position: absolute;
-    top: 0;
+    position: absolute; /* not fixed: will scroll away with the page */
+    top: -102px; /* pull the svg up so it visually touches the top of the viewport */
     left: 0;
     width: 100%;
-    height: 870px;
+    height: 40vh; /* the svg won't take the whole page */
+    max-height: 40vh;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .background-svg {
+    display: block;
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
 
 /* Tree */
@@ -224,7 +247,7 @@ nav a:hover {
 .hero-text h1 {
     font-family: 'Lexend', sans-serif;
     font-weight: 900;
-    font-size: 64px;
+    font-size: 96px;
     color: #343330;
     margin-bottom: 10px;
 }
@@ -232,13 +255,14 @@ nav a:hover {
 .hero-text p {
     font-family: 'Lexend', sans-serif;
     font-weight: 400;
-    font-size: 24px;
+    font-size: 36px;
     color: #343330;
 }
 
 /* Section Projet */
 .section-projet {
     position: relative;
+    margin-top: 200px;
     padding: 88px 56px 80px;
 }
 
@@ -256,13 +280,16 @@ nav a:hover {
     font-weight: 900;
     font-size: 36px;
     color: #578a22;
-    text-align: center;
-    margin-bottom: 109px;
+    text-align: left;
+    margin-bottom: 20px;
+    max-width: 1328px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .team-title {
-    margin-top: 576px;
-    margin-bottom: 131px;
+    margin-top: 100px;
+    margin-bottom: 40px;
 }
 
 .description-text {
@@ -354,7 +381,8 @@ nav a:hover {
 /* Section Règles */
 .section-regles {
     position: relative;
-    padding: 88px 56px 80px;
+    margin-top: 100px;
+    padding: 100px 56px 80px;
 }
 
 .rules-text,
@@ -382,8 +410,8 @@ nav a:hover {
 }
 
 .benefits-title {
-    margin-top: 562px;
-    margin-bottom: 137px;
+    margin-top: 80px;
+    margin-bottom: 20px;
 }
 
 /* Responsive Design */
@@ -424,7 +452,7 @@ nav a:hover {
 
 @media (max-width: 768px) {
     .logo {
-        font-size: 20px;
+        font-size: 26px;
     }
 
     nav {
@@ -434,7 +462,7 @@ nav a:hover {
     }
 
     nav a {
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .cta-button {
@@ -443,11 +471,11 @@ nav a:hover {
     }
 
     .hero-text h1 {
-        font-size: 42px;
+        font-size: 48px;
     }
 
     .hero-text p {
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .section-title {
