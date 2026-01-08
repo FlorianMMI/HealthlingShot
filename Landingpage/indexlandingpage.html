@@ -1,11 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Healthingshot - Le jeu fait pour votre santé!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">Healthingshot</div>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#projet">Projet & équipe</a>
+                <a href="#regles">Règle & bien-être</a>
+            </nav>
+            <button class="cta-button">Venez jouer!</button>
+        </header>
+
+        <!-- Header Line -->
+        <div class="header-line"></div>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-background">
+                <svg class="background-svg" viewBox="0 0 1440.03 870" fill="none" preserveAspectRatio="none">
+                    <rect fill="#62BEF0" width="1440.03" height="870"/>
+                    <path d="M-175 870L-175 493.5L108 663.5L391 606L674 721L957 634L1240 688.5L1523 663.5L1806 721V870H-175Z" 
+                          fill="#578A22" stroke="black" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <!-- Tree -->
+            <div class="tree">
+                <div class="tree-trunk"></div>
+                <div class="tree-branches"></div>
+            </div>
+
+            <!-- House -->
+            <div class="house">
+                <div class="house-roof"></div>
+                <div class="house-body"></div>
+            </div>
+
+            <!-- Strawberries -->
+            <div class="strawberries">
+                <div class="strawberry strawberry-1"></div>
+                <div class="strawberry strawberry-2"></div>
+                <div class="strawberry strawberry-3"></div>
+                <div class="strawberry strawberry-4"></div>
+                <div class="strawberry strawberry-5"></div>
+                <div class="strawberry strawberry-6"></div>
+                <div class="strawberry strawberry-7"></div>
+            </div>
+
+            <!-- Hero Text -->
+            <div class="hero-text">
+                <h1>Healthingshot</h1>
+                <p>Le jeu fait pour votre santé!</p>
+            </div>
+        </section>
+
+        <!-- Projet & Equipe Section -->
+        <section id="projet" class="section-projet">
+            <h2 class="section-title">Projet & Equipe</h2>
+            
+            <h3 class="subsection-title">Description du projet</h3>
+            <div class="description-text">
+                <p>&nbsp;</p>
+                <p>Nous avons fait ce projet lors de la Nuit MMI 2026, qui se déroulait du 8 au 9 janvier 2026, c'est un challenge pédagogique de 24 heures durant lequel nous devions travailler en équipe pour concevoir un projet numérique autour du thème de l'exergaming. Cet événement vise à nous placer dans des conditions proches du monde professionnel, en favorisant la collaboration, la créativité et la gestion de projet sous contrainte de temps.</p>
+                <p>&nbsp;</p>
+                <p>Le projet consiste à créer un jeu vidéo interactif incitant le joueur à bouger son corps pour progresser, ainsi qu'une landing page de présentation. Le but de ce jeu est de sensibiliser à l'importance de l'activité physique et de montrer que le jeu vidéo peut être un outil ludique et positif pour la santé, notamment pour lutter contre la sédentarité.</p>
+                <p>&nbsp;</p>
+                <p>Les jeux ont du etre développés avec p5play, et devait intégrer des dispositifs le Makey Makey et ML5.js afin de proposer des interactions physiques innovantes grâce aux mouvements du corps et à la webcam. La landing page, réalisée en anglais, présente le concept du jeu et imagine les évolutions possibles d'une version 2.</p>
+                <p>&nbsp;</p>
+                <p>La Nuit MMI set conclu par une démonstration devant un jury, qui évalue les projets selon leur originalité, leur qualité technique et graphique, et leur pertinence par rapport à la thématique de l'exergaming.</p>
+            </div>
+
+            <h3 class="subsection-title team-title">Notre équipe</h3>
+            <div class="team-grid">
+                <!-- Team Member 1 -->
+                <div class="team-member">
+                    <div class="member-circle-bg"></div>
+                    <div class="member-card">
+                        <div class="member-photo"></div>
+                        <h4>Florian<br>Bounissou</h4>
+                        <p class="member-role">Developpement Web<br>Charger de Projet</p>
+                        <p class="member-quote">"Dorian va faire des squats!"</p>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="team-member">
+                    <div class="member-circle-bg"></div>
+                    <div class="member-card">
+                        <div class="member-photo"></div>
+                        <h4>Florian<br>Bounissou</h4>
+                        <p class="member-role">Developpement Web<br>Charger de Projet</p>
+                        <p class="member-quote">"Dorian va faire des squats!"</p>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="team-member">
+                    <div class="member-circle-bg"></div>
+                    <div class="member-card">
+                        <div class="member-photo"></div>
+                        <h4>Florian<br>Bounissou</h4>
+                        <p class="member-role">Developpement Web<br>Charger de Projet</p>
+                        <p class="member-quote">"Dorian va faire des squats!"</p>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="team-member">
+                    <div class="member-circle-bg"></div>
+                    <div class="member-card">
+                        <div class="member-photo"></div>
+                        <h4>Florian<br>Bounissou</h4>
+                        <p class="member-role">Developpement Web<br>Charger de Projet</p>
+                        <p class="member-quote">"Dorian va faire des squats!"</p>
+                    </div>
+                </div>
+
+                <!-- Team Member 5 -->
+                <div class="team-member">
+                    <div class="member-circle-bg"></div>
+                    <div class="member-card">
+                        <div class="member-photo"></div>
+                        <h4>Florian<br>Bounissou</h4>
+                        <p class="member-role">Developpement Web<br>Charger de Projet</p>
+                        <p class="member-quote">"Dorian va faire des squats!"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Règle & bien-être Section -->
+        <section id="regles" class="section-regles">
+            <h2 class="section-title">Règle & bien-être</h2>
+            
+            <h3 class="subsection-title">Règle du jeu</h3>
+            <div class="rules-text">
+                <p>Les regles du jeu sont simple</p>
+                <p>Le joueur dispose de 3 vies au début de la partie.<br>
+                L'objectif est d'éliminer tous les aliments mauvais pour la santé présents à l'écran afin de passer au niveau suivant.</p>
+                <p>Pour pouvoir tirer, le joueur doit effectuer des squats :<br>
+                1 squat = 1 munition.</p>
+                <p>Pour le tire:</p>
+                <p>La visée se fait en plaçant la main devant la webcam.<br>
+                Le tir est déclenché à l'aide de la pâte à modeler reliée au Makey Makey, ce qui permet une interaction physique avec le jeu.</p>
+                <p>Pendant la partie, des éléments représentant des objets bons pour la santé et des objets mauvais pour la santé traversent l'écran :</p>
+                <ul>
+                    <li>Si le joueur touche un objet bon pour la santé, il perd une vie.</li>
+                    <li>Si le joueur élimine un objet mauvais pour la santé, il marque une progression vers la victoire.</li>
+                </ul>
+                <p>Lorsque tous les éléments mauvais pour la santé sont éliminés, le joueur accède au niveau suivant.<br>
+                La partie se termine lorsque le joueur n'a plus de vies ou quand il reussi a gagner le dernier niveau.</p>
+            </div>
+
+            <h3 class="subsection-title benefits-title">Les biens faits</h3>
+            <div class="benefits-text">
+                <p>Ce jeu met en avant plusieurs bienfaits, aussi bien pour le joueur que dans un cadre pédagogique :</p>
+                <p>&nbsp;</p>
+                <p>Sur le plan physique, il encourage l'activité corporelle et permet de lutter contre la sédentarité. En obligeant le joueur à bouger pour jouer, le jeu favorise le mouvement, la coordination et peut contribuer à améliorer la condition physique de manière ludique.</p>
+                <p>&nbsp;</p>
+                <p>Sur le plan mental, le jeu stimule la motivation. Le fait de transformer l'effort physique en jeu rend l'activité plus agréable, réduit la sensation de contrainte et peut aider à diminuer le stress tout en procurant du plaisir.</p>
+                <p>&nbsp;</p>
+                <p>Sur le plan social, l'exergaming peut renforcer l'interaction entre les joueurs, notamment lors des phases de démonstration ou de jeu collectif. Il favorise l'échange, la coopération et le partage autour d'une expérience commune.</p>
+                <p>&nbsp;</p>
+                <p>Enfin, sur le plan éducatif, ce projet permet de sensibiliser aux enjeux de santé et de bien-être, tout en montrant que le numérique peut avoir un impact positif. Il met également en valeur l'innovation technologique en proposant de nouvelles façons d'interagir avec un jeu vidéo grâce au mouvement du corps.</p>
+            </div>
+        </section>
+    </div>
 </body>
 </html>
