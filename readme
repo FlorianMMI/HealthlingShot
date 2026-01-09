@@ -1,0 +1,134 @@
+# 🎮 Healthingshot
+
+> **Aim the junk food for the love of life**
+
+An interactive exergaming project created during MMI Night 2026, combining physical activity with gaming through innovative body movement detection.
+
+## 📖 About
+
+Healthingshot is a 24-hour challenge project developed during the MMI Night 2026 (January 8-9, 2026). This exergaming experience encourages players to move their bodies to progress, promoting physical activity and combating sedentary behavior in a fun and engaging way.
+
+### 🎯 Key Features
+
+- **Physical Interaction**: Perform squats to get ammunition (1 squat = 1 bullet)
+- **Motion Tracking**: Aim using your hand in front of the webcam
+- **Makey Makey Integration**: Shoot using modeling clay connected to Makey Makey
+- **ML5.js Pose Detection**: Real-time body movement tracking with MoveNet
+- **Progressive Levels**: Eliminate unhealthy food items to advance through levels
+- **Health Awareness**: Lose a life if you hit healthy food items
+
+## 🚀 Live Demo
+
+- **Play the game**: [Healthingshot Game](https://florianmmi.github.io/HealthlingShot/Jeu/)
+- **Landing Page**: [Project Website](https://florianmmi.github.io/HealthlingShot/)
+
+## 🛠️ Technologies Used
+
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Game Engine**: p5.js + p5play
+- **AI/ML**: ML5.js (MoveNet for pose detection, HandPose for hand tracking)
+- **Hardware**: Makey Makey
+- **Libraries**: 
+  - Body pose detection
+  - Hand pose detection
+  - Physics engine (p5play)
+
+## 🎮 How to Play
+
+1. **Position yourself** in front of your webcam
+2. **Do squats** to load ammunition (each squat = 1 bullet)
+3. **Aim** by placing your hand in front of the webcam
+4. **Shoot** using the modeling clay connected to Makey Makey
+5. **Eliminate** all unhealthy food items to progress
+6. **Avoid** hitting healthy food items (you'll lose a life!)
+7. You have **3 lives** to complete the levels
+
+## 🏗️ Project Structure
+
+```
+HealthlingShot/
+├── index.html          # Landing page
+├── style.css           # Styling for landing page
+├── readme              # This file
+├── Jeu/                # Game directory
+│   ├── index.html      # Game page
+│   └── sketch.js       # Game logic
+└── assets/             # Images and SVG files
+    ├── Play.svg
+    ├── Rules.svg
+    ├── Settings.svg
+    ├── background.svg
+    ├── fronde.svg
+    ├── bois.svg
+    └── ...
+```
+
+## 👥 Team
+
+- **Florian Bounissou** - Web Development & Project Manager
+- **Nino Villoutreix** - Digital Creation
+- **Dorian Khireddine** - Digital Creation
+- **Lylou Debiais** - Digital Creation
+- **Matéo Mougenot** - Digital Creation
+
+## 💡 Educational Context
+
+This project was developed as part of the **MMI Night 2026**, a 24-hour educational challenge organized by the MMI (Multimedia and Internet Professions) program. The event aims to:
+
+- Place students in professional-like conditions
+- Promote collaboration and creativity
+- Develop project management skills under time constraints
+- Explore the theme of exergaming and its health benefits
+
+## 🎓 Learning Objectives
+
+### Physical Benefits
+- Encourages bodily activity and movement
+- Helps combat sedentary behavior
+- Improves coordination in a fun way
+
+### Mental Benefits
+- Stimulates motivation through gamification
+- Makes physical effort more enjoyable
+- Reduces stress while providing pleasure
+
+### Social Benefits
+- Strengthens interaction between players
+- Promotes exchange and cooperation
+- Creates shared experiences
+
+### Educational Benefits
+- Raises awareness about health and wellness
+- Demonstrates positive impact of digital technology
+- Showcases innovative ways to interact with video games
+
+## 🔧 Installation & Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/florianmmi/HealthlingShot.git
+```
+
+2. Open `index.html` in your browser for the landing page
+
+3. To play the game, navigate to `Jeu/index.html` or use the live demo link
+
+4. **Hardware Requirements**:
+   - Webcam
+   - Makey Makey (optional but recommended for full experience)
+   - Modeling clay for Makey Makey connection
+
+## 📝 License
+
+This project was created for educational purposes during MMI Night 2026.
+
+## 🌟 Acknowledgments
+
+- MMI Night 2026 organizers
+- ML5.js community for pose detection tools
+- p5.js and p5play communities
+- Makey Makey team
+
+---
+
+Made with ❤️ during MMI Night 2026
