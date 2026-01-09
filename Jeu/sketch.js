@@ -270,6 +270,39 @@ function addAllies(x, y) {
 
 
 function mousePressed() {
+  // Gestion du bouton Play Again dans l'écran game over
+  if (gameOver || life <= 0) {
+    let buttonW = 200;
+    let buttonH = 60;
+    let buttonX = width / 2 - buttonW / 2;
+    let buttonY = height / 2 + 180;
+    
+    if (mouseX > buttonX && mouseX < buttonX + buttonW &&
+        mouseY > buttonY && mouseY < buttonY + buttonH) {
+      // Réinitialiser le jeu
+      life = 3;
+      level = 1;
+      squatCount = 10;
+      totalSquats = 0;
+      enemiesKilled = 0;
+      gameOver = false;
+      levelStarted = false;
+      gameStarted = false; // Retourner au menu
+      
+      // Nettoyer tous les sprites
+      boisSprites.forEach(bois => bois.remove());
+      boisSprites = [];
+      ennemies.forEach(e => e.remove());
+      ennemies = [];
+      allies.forEach(a => a.remove());
+      allies = [];
+      projectiles.forEach(p => p.remove());
+      projectiles = [];
+    }
+    return; // Ne pas gérer les autres boutons si on est en game over
+  }
+  
+  // Gestion des boutons du menu principal
   if (!gameStarted) {
     // Définir les zones de clic pour chaque bouton
     // Ces valeurs sont en pourcentage de l'écran
@@ -900,35 +933,5 @@ function drawGameOver() {
   text("Play again", width / 2, buttonY + 38);
 }
 
-function mousePressed() {
-  // Vérifier si on clique sur le bouton Play Again
-  if (gameOver || life <= 0) {
-    let buttonW = 200;
-    let buttonH = 60;
-    let buttonX = width / 2 - buttonW / 2;
-    let buttonY = height / 2 + 180;
-    
-    if (mouseX > buttonX && mouseX < buttonX + buttonW &&
-        mouseY > buttonY && mouseY < buttonY + buttonH) {
-      // Réinitialiser le jeu
-      life = 3;
-      level = 1;
-      squatCount = 10;
-      totalSquats = 0;
-      enemiesKilled = 0;
-      gameOver = false;
-      levelStarted = false;
-      
-      // Nettoyer tous les sprites
-      boisSprites.forEach(bois => bois.remove());
-      boisSprites = [];
-      ennemies.forEach(e => e.remove());
-      ennemies = [];
-      allies.forEach(a => a.remove());
-      allies = [];
-      projectiles.forEach(p => p.remove());
-      projectiles = [];
-    }
-  }
-}
+
 
