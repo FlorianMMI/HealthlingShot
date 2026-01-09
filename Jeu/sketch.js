@@ -17,6 +17,14 @@ let minHipY = 999999; // Pour suivre la position la plus basse
 let maxHipY = 0; // Pour suivre la position la plus haute
 let squatStartTime = 0; // Pour tracker le temps de la descente
 let levelStarted = false;
+let gameStarted = false; // Pour savoir si le jeu a démarré
+let playButtonImg; // Image du bouton play
+let rulesImg; // Image de la page rules
+let settingsImg; // Image de la page settings
+let currentScreen = 'play'; // 'play', 'rules', ou 'settings'
+let playUISprite;
+let rulesUISprite;
+let settingsUISprite;
 
 // Variables pour le tir
 let cannonPos; // Point A - Position fixe du canon
@@ -62,6 +70,12 @@ function preload() {
   frondeImg = loadImage('../assets/fronde.svg');
   enemyImg = loadImage('../assets/Saucisson.svg');
   enemy3Img = loadImage('../assets/burger.svg');
+  // Bouton Play
+  playButtonImg = loadImage('../assets/Play.svg');
+  // Page Rules
+  rulesImg = loadImage('../assets/Rules.svg');
+  // Page Settings
+  settingsImg = loadImage('../assets/Settings.svg');
   alliesImg = loadImage('../assets/Allie.svg');
 
 }
@@ -121,6 +135,28 @@ function setup() {
 
   modelsLoaded = true;
   world.gravity.y = 10;
+  
+  // Définir les layers pour les sprites du jeu
+  floorSprite.layer = 0;
+  frondeSprite.layer = 5;
+  
+  // ================= UI MENU (TOUJOURS AU PREMIER PLAN) =================
+  playUISprite = new Sprite(width / 2, height / 2, width, height, 'static');
+  playUISprite.img = playButtonImg;
+  playUISprite.collider = "none";
+  playUISprite.layer = 100;
+
+  rulesUISprite = new Sprite(width / 2, height / 2, width, height, 'static');
+  rulesUISprite.img = rulesImg;
+  rulesUISprite.collider = "none";
+  rulesUISprite.layer = 100;
+  rulesUISprite.visible = false;
+
+  settingsUISprite = new Sprite(width / 2, height / 2, width, height, 'static');
+  settingsUISprite.img = settingsImg;
+  settingsUISprite.collider = "none";
+  settingsUISprite.layer = 100;
+  settingsUISprite.visible = false;
 }
 
 function setBoisVertical(x, y) {
@@ -133,6 +169,7 @@ function setBoisVertical(x, y) {
   bois.rotation = 0;
   bois.mass = 0.5;
   bois.bounciness = 0.3;
+  bois.layer = 3;
   return bois;
 }
 
@@ -143,6 +180,7 @@ function setBoisHorizontal(x, y) {
   }
   bois.rotation = 90;
   bois.mass = 0.5;
+  bois.layer = 3;
   return bois;
 }
 
@@ -214,6 +252,7 @@ function addEnemies(x, y) {
     enemy.img = enemy3Img;
   }
   enemy.mass = 1;
+  enemy.layer = 4;
   ennemies.push(enemy);
 }
 
@@ -230,6 +269,52 @@ function addAllies(x, y) {
 
 
 
+function mousePressed() {
+  if (!gameStarted) {
+    // Définir les zones de clic pour chaque bouton
+    // Ces valeurs sont en pourcentage de l'écran
+    // À ajuster selon la position réelle des boutons dans votre SVG
+    
+    if (currentScreen === 'play') {
+      // Bouton Play (centre de l'écran)
+      if (mouseX > width * 0.38 && mouseX < width * 0.62 && 
+          mouseY > height * 0.37 && mouseY < height * 0.465) {
+        gameStarted = true;
+      }
+      // Bouton Rules (bas gauche)
+      else if (mouseX > width * 0.34 && mouseX < width * 0.48 && 
+               mouseY > height * 0.59 && mouseY < height * 0.662) {
+        currentScreen = 'rules';
+      }
+      // Bouton Settings (bas droite)
+      else if (mouseX > width * 0.54 && mouseX < width * 0.70 && 
+               mouseY > height * 0.59 && mouseY < height * 0.662) {
+        currentScreen = 'settings';
+      }
+    }
+    else if (currentScreen === 'rules') {
+      // Bouton Play depuis Rules (centre de l'écran)
+      if (mouseX > width * 0.38 && mouseX < width * 0.62 && 
+          mouseY > height * 0.37 && mouseY < height * 0.465) {
+        gameStarted = true;
+      }
+      // Bouton Settings depuis Rules (bas droite)
+      else if (mouseX > width * 0.54 && mouseX < width * 0.70 && 
+               mouseY > height * 0.59 && mouseY < height * 0.662) {
+        currentScreen = 'settings';
+      }
+      // Si clic en dehors des boutons Play et Settings, retour à Play
+      else {
+        currentScreen = 'play';
+      }
+    }
+    else if (currentScreen === 'settings') {
+      // Retour à l'écran play (cliquer n'importe où)
+      currentScreen = 'play';
+    }
+  }
+}
+
 function windowResized() {
   // Adapter le canvas à la nouvelle taille de la fenêtre
   resizeCanvas(windowWidth, windowHeight);
@@ -241,20 +326,44 @@ function windowResized() {
     floorSprite.y = height - 100;
     floorSprite.width = width;
   }
+  
+  playUISprite.position.x = width / 2;
+  playUISprite.position.y = height / 2;
+  playUISprite.width = width;
+  playUISprite.height = height;
+
+  rulesUISprite.position.x = width / 2;
+  rulesUISprite.position.y = height / 2;
+  rulesUISprite.width = width;
+  rulesUISprite.height = height;
+
+  settingsUISprite.position.x = width / 2;
+  settingsUISprite.position.y = height / 2;
+  settingsUISprite.width = width;
+  settingsUISprite.height = height;
+}
+
+function updateMenuUI() {
+  if (gameStarted) {
+    playUISprite.visible = false;
+    rulesUISprite.visible = false;
+    settingsUISprite.visible = false;
+    return;
+  }
+
+  playUISprite.visible = currentScreen === 'play';
+  rulesUISprite.visible = currentScreen === 'rules';
+  settingsUISprite.visible = currentScreen === 'settings';
 }
 
 function draw() {
-  // Dessiner le background en premier
   image(bgImg, 0, 0, width, height);
-  
-  // Message de chargement si les modèles ne sont pas prêts
-  if (!modelsLoaded) {
-    fill(255);
-    textSize(32);
-    textAlign(CENTER);
-    text("Chargement des modèles...", width / 2, height / 2);
-    return;
-  }
+
+  updateMenuUI();
+
+  if (!modelsLoaded) return;
+
+  if (!gameStarted) return;
 
   // Afficher l'écran game over si la vie est à 0
   if (life <= 0 || gameOver) {
@@ -283,6 +392,45 @@ function draw() {
   
   // Dessiner la miniature caméra en haut à droite (DERNIER pour être au dessus)
   drawCameraMiniature();
+}
+
+function drawPlayButton() {
+  // Le bouton play prend toute la place de l'écran
+  imageMode(CORNER);
+  image(playButtonImg, 0, 0, width, height);
+  
+  // DEBUG: Afficher les zones de clic (commenté)
+  /*
+  noFill();
+  stroke(255, 0, 0, 150);
+  strokeWeight(3);
+  // Zone Play
+  rect(width * 0.38, height * 0.45, width * 0.24, height * 0.095);
+  // Zone Rules
+  rect(width * 0.34, height * 0.59, width * 0.14, height * 0.072);
+  // Zone Settings
+  rect(width * 0.50, height * 0.59, width * 0.16, height * 0.072);
+  
+  // Afficher les coordonnées de la souris
+  fill(255);
+  noStroke();
+  textSize(16);
+  textAlign(LEFT);
+  text(`Mouse: ${mouseX}, ${mouseY}`, 10, 20);
+  text(`Width: ${width}, Height: ${height}`, 10, 40);
+  */
+}
+
+function drawRulesScreen() {
+  // La page rules prend toute la place de l'écran
+  imageMode(CORNER);
+  image(rulesImg, 0, 0, width, height);
+}
+
+function drawSettingsScreen() {
+  // La page settings prend toute la place de l'écran
+  imageMode(CORNER);
+  image(settingsImg, 0, 0, width, height);
 }
 
 function drawGameEnvironment() {
@@ -568,6 +716,7 @@ function shoot() {
         projectile.vel.x = direction.x * powerCoef;
         projectile.vel.y = direction.y * powerCoef;
         projectile.life = 800; // Durée de vie en frames
+        projectile.layer = 6;
 
         projectiles.push(projectile);
 
