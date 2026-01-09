@@ -12,7 +12,7 @@ let poses = [];
 let connections;
 let previousPose = null;
 let squatInProgress = false;
-let squatCount = 1000; // Nombre de squats effectués
+let squatCount = 0; // Nombre de squats effectués
 let minHipY = 999999; // Pour suivre la position la plus basse
 let maxHipY = 0; // Pour suivre la position la plus haute
 let squatStartTime = 0; // Pour tracker le temps de la descente
