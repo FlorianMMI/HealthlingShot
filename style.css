@@ -302,7 +302,7 @@ nav a:hover {
 }
 
 .description-text p {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 /* Team Grid */
@@ -397,7 +397,7 @@ nav a:hover {
 
 .rules-text p,
 .benefits-text p {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 .rules-text ul {
