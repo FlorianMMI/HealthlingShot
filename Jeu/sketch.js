@@ -12,7 +12,7 @@ let poses = [];
 let connections;
 let previousPose = null;
 let squatInProgress = false;
-let squatCount = 0; // Nombre de squats effectués
+let squatCount = 10; // Nombre de squats effectués
 let minHipY = 999999; // Pour suivre la position la plus basse
 let maxHipY = 0; // Pour suivre la position la plus haute
 let squatStartTime = 0; // Pour tracker le temps de la descente
@@ -23,8 +23,10 @@ let cannonPos; // Point A - Position fixe du canon
 let projectiles = []; // Liste des projectiles tirés
 let canShoot = true; // Pour éviter le tir en rafale
 let floorSprite; // Sprite pour le sol
+let frondeSprite; // Sprite pour le lance-pierre
 let boisSprites = []; // Tableau de tous les sprites de bois
 let boisImg; // Image SVG du bois
+let enemyImg; // Image de l'ennemi
 
 // Variables pour la détection de main
 let handPose;
@@ -33,7 +35,7 @@ let modelsLoaded = false;
 
 
 // Variable de jeu
-let level = 1;
+let level = 3;
 let life = 3;
 let ennemies = [];
 
@@ -51,6 +53,7 @@ function preload() {
   floorImg = loadImage('../assets/1er-plan.svg');
   // Fronde
   frondeImg = loadImage('../assets/fronde.svg');
+  enemyImg = loadImage('../assets/Saucisson.svg');
 
 }
 
@@ -70,13 +73,24 @@ function setup() {
 
   // Hitbox 1
   let hit1 = new Sprite(width / 2 - 700, height / 2 + 250, 500, 300, 'static');
-  hit1.debug = true;
-  hit1.debugColor = "green";
+  hit1.color = color(0, 0, 0, 0); // invisible
+  hit1.stroke = color(0, 0, 0, 0);
+  
 
   // Hitbox 2
   let hit2 = new Sprite(width / 2, height / 2 + 500, 2500, 300, 'static');
-  hit2.debug = true;
-  hit2.debugColor = "green";
+  hit2.color = color(0, 0, 0, 0); // invisible
+  hit2.stroke = color(0, 0, 0, 0);
+  
+  // Initialiser la position du canon (centre gauche de l'écran) EN PREMIER
+  cannonPos = createVector(150, height - 400);
+  
+  // Créer le sprite de la fronde une seule fois APRÈS cannonPos
+  frondeSprite = new Sprite(cannonPos.x, cannonPos.y, 180, 180, 'static');
+  frondeSprite.scale = 0.5;
+  frondeSprite.img = frondeImg;
+  frondeSprite.collider = "none"; // pas de hitbox
+  frondeSprite.layer = 10; // Au dessus des autres sprites
 
   // Start detecting poses in the webcam video
   bodyPose.detectStart(video, gotPoses);
@@ -84,9 +98,6 @@ function setup() {
   handPose.detectStart(video, gotHands);
   // Get the skeleton connection information
   connections = bodyPose.getSkeleton();
-
-  // Initialiser la position du canon (centre gauche de l'écran)
-  cannonPos = createVector(150, height - 250);
 
   // Créer le sprite du sol
 
@@ -116,18 +127,15 @@ function setBoisHorizontal(x, y) {
   let bois = new Sprite(x, y, boisImg.width, boisImg.height, 'd');
   if (boisImg && boisImg.width > 0) {
     bois.img = boisImg;
-  } else {
-    bois.color = color(139, 69, 19); // Marron si pas d'image
   }
   bois.rotation = 90;
   bois.mass = 0.5;
-  bois.debug = true;
   return bois;
 }
 
 function setupLevel1() {
   // Créer un château avec plusieurs étages
-  let centerX = width / 2 + 200;
+  let centerX = width / 2 + 500;
   let baseY = height - 295;
 
   // Base: 2 piliers verticaux
@@ -138,7 +146,7 @@ function setupLevel1() {
   boisSprites.push(setBoisHorizontal(centerX, baseY - 80));
 
   // Rajout de l'énemies
-  addEnemies(width / 2 + 200, height - 400);
+  addEnemies(width / 2 + 500, height - 400);
 
 
 }
@@ -146,7 +154,7 @@ function setupLevel1() {
 
 function setupLevel2() {
   // Créer un château avec plusieurs étages
-  let centerX = width / 2 + 200;
+  let centerX = width / 2 + 500;
   let baseY = height - 295;
 
   // Base: 2 piliers verticaux
@@ -157,15 +165,23 @@ function setupLevel2() {
   boisSprites.push(setBoisHorizontal(centerX, baseY - 80));
 
   // Rajout de l'énemies
-  addEnemies(width / 2 + 200, height - 400);
-  addEnemies(width / 2 + 200, height - 200);
+  addEnemies(width / 2 + 500, height - 400);
+  addEnemies(width / 2 + 500, height - 200);
+}
+
+function setupLevel3() {
+
+ 
+  
 }
 
 
 function addEnemies(x, y) {
   // Ajouter des ennemis (cercles rouges) sur le château
-  let enemy = new Sprite(x, y, 30);
+  let enemy = new Sprite(x, y, 150, 150);
+  enemy.scale = 0.7;
   enemy.color = color(255, 0, 0);
+  enemy.img = enemyImg;
   enemy.mass = 1;
   ennemies.push(enemy);
 }
@@ -187,10 +203,9 @@ function windowResized() {
 }
 
 function draw() {
-  // Dessiner l'environnement de jeu
-  drawGameEnvironment();
-
-  image(bgImg, 0, 0, bgImg.width, bgImg.height);
+  // Dessiner le background en premier
+  image(bgImg, 0, 0, width, height);
+  
   // Message de chargement si les modèles ne sont pas prêts
   if (!modelsLoaded) {
     fill(255);
@@ -216,6 +231,9 @@ function draw() {
   // Gérer le tir
   shoot();
 
+  // Dessiner l'environnement de jeu (UI) PAR DESSUS tout
+  drawGameEnvironment();
+  
   // Dessiner la miniature caméra en haut à droite (DERNIER pour être au dessus)
   drawCameraMiniature();
 }
@@ -229,6 +247,7 @@ function drawGameEnvironment() {
   fill(255);
   textSize(24);
   textAlign(LEFT);
+  noStroke();
   image(ammoImg, 20, 20, 24, 24);
   text(" x" + squatCount, 50, 40);
   text("Ennemies: " + ennemies.length, 20, 70);
@@ -384,21 +403,16 @@ function squatDetected() {
 }
 
 function drawCannon() {
-  // Dessiner le canon (point A) en jaune
-  let frondeSprite = new Sprite(cannonPos.x+100, cannonPos.y-200, 0, 0, 'static');
-  frondeSprite.img = frondeImg;
-  frondeSprite.collider = "none";
+  // Le sprite de la fronde est déjà créé dans setup, on met juste à jour sa position si nécessaire
+  if(frondeSprite) {
+    frondeSprite.x = cannonPos.x;
+    frondeSprite.y = cannonPos.y;
+  }
 
   // Ligne de visée vers le poignet GAUCHE détecté (depuis bodyPose)
   if (poses.length > 0) {
     let pose = poses[0];
-    // Index 9 = left_wrist dans MoveNet
-    let wrist = pose.keypoints[9];
-
-    // Debug: afficher la confidence
-    fill(255);
-    textSize(14);
-    text("Wrist confidence: " + wrist.confidence.toFixed(2), 20, height - 170);
+    let wrist = pose.keypoints[9]; // Index 9 = left_wrist dans MoveNet
 
     if (wrist.confidence > 0.3) {
       // Sensibilité réduite 2.5x : plage plus large pour plus de contrôle
@@ -420,25 +434,22 @@ function drawCannon() {
       noStroke();
       circle(handX, handY, 25);
 
-      // // Ligne élastique style Angry Birds du canon vers la main
-      // stroke(139, 69, 19); // Marron pour l'élastique
-      // strokeWeight(4);
-      // line(cannonPos.x, cannonPos.y, handX, handY);
-
-      // // Ligne de retour (pour effet élastique)
-      // line(cannonPos.x, cannonPos.y + 40, handX, handY);
-
-      // Afficher la distance et la puissance
+      // Afficher la distance et la puissance (avec fond pour visibilité)
       let distance = dist(cannonPos.x, cannonPos.y, handX, handY);
       let clampedDist = min(distance, 300);
       let power = map(clampedDist, 50, 300, 5, 20);
 
-      fill(255);
+      // Fond semi-transparent pour les textes
+      fill(0, 0, 0, 150);
       noStroke();
+      rect(15, height - 235, 200, 50, 5);
+      
+      // Textes en blanc
+      fill(255);
       textSize(18);
       textAlign(LEFT);
-      text("Distance: " + Math.round(distance), 20, height - 220);
-      text("Puissance: " + Math.round(power), 20, height - 195);
+      text("Distance: " + Math.round(distance), 20, height - 210);
+      text("Puissance: " + Math.round(power), 20, height - 185);
     }
   }
 }
@@ -489,7 +500,6 @@ function shoot() {
         projectile.life = 800; // Durée de vie en frames
 
         projectiles.push(projectile);
-        console.log("🔫 TIR! Puissance: " + Math.round(powerCoef) + " | Distance: " + Math.round(distance));
 
         canShoot = false; // Empêcher le tir en rafale
       }
@@ -563,6 +573,11 @@ function updateLevel() {
 
   if (level === 2 && !levelStarted) {
     setupLevel2();
+    levelStarted = true;
+  }
+
+  if (level === 3 && !levelStarted) {
+    setupLevel3();
     levelStarted = true;
   }
 
