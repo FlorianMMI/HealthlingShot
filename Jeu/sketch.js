@@ -35,6 +35,7 @@ let frondeSprite; // Sprite pour le lance-pierre
 let boisSprites = []; // Tableau de tous les sprites de bois
 let boisImg; // Image SVG du bois
 let enemyImg; // Image de l'ennemi
+let alliesImg; // Image de l'allié
 
 // Variables pour la détection de main
 let handPose;
@@ -43,9 +44,10 @@ let modelsLoaded = false;
 
 
 // Variable de jeu
-let level = 1;
-let life = 3;
+let level = 3;
+let life = 1;
 let ennemies = [];
+let allies = [];
 
 function preload() {
   // Load the bodyPose model
@@ -68,6 +70,7 @@ function preload() {
   rulesImg = loadImage('../assets/Rules.svg');
   // Page Settings
   settingsImg = loadImage('../assets/Settings.svg');
+  alliesImg = loadImage('../assets/Allie.svg');
 
 }
 
@@ -89,6 +92,10 @@ function setup() {
   let hit1 = new Sprite(width / 2 - 700, height / 2 + 250, 500, 300, 'static');
   hit1.color = color(0, 0, 0, 0); // invisible
   hit1.stroke = color(0, 0, 0, 0);
+
+  let hit3 = new Sprite(width / 2 + 1000, height / 2 + 250, 80, 1000, 'static');
+  hit3.color = color(0, 0, 0, 0); // invisible
+  hit3.stroke = color(0, 0, 0, 0);
   
 
   // Hitbox 2
@@ -209,8 +216,21 @@ function setupLevel2() {
 
 function setupLevel3() {
 
- 
-  
+  // Créer un château avec plusieurs étages
+  let centerX = width / 2 + 500;
+  let baseY = height - 295;
+
+  // Base: 2 piliers verticaux
+  boisSprites.push(setBoisVertical(centerX - 79, baseY));
+  boisSprites.push(setBoisVertical(centerX + 79, baseY));
+
+  // Premier étage: plateforme horizontale
+  boisSprites.push(setBoisHorizontal(centerX, baseY - 80));
+
+  // Rajout de l'énemies
+  addEnemies(width / 2 + 500, height - 400);
+  addEnemies(width / 2 + 500, height - 200);
+  addAllies(width / 2 + 300, height - 200);
 }
 
 
@@ -223,6 +243,16 @@ function addEnemies(x, y) {
   enemy.mass = 1;
   enemy.layer = 4;
   ennemies.push(enemy);
+}
+
+function addAllies(x, y) {
+  // Ajouter des alliés (cercles verts) sur le château
+  let ally = new Sprite(x, y, 150, 150);
+  ally.scale = 0.5;
+  ally.color = color(0, 255, 0);
+  ally.img = alliesImg;
+  ally.mass = 1;
+  allies.push(ally);
 }
 
 
@@ -642,6 +672,7 @@ function shoot() {
 
         // Créer le projectile comme sprite p5play
         let projectile = new Sprite(cannonPos.x, cannonPos.y, 15);
+        projectile.mass = 2;
         projectile.color = color(255, 100, 0);
         projectile.vel.x = direction.x * powerCoef;
         projectile.vel.y = direction.y * powerCoef;
@@ -685,6 +716,23 @@ function updateProjectiles() {
           p.remove();
           projectiles.splice(i, 1);
           break; // Sortir de la boucle ennemis
+        }
+      }
+    }
+
+    if(allies.length > 0) {
+      for (let k = allies.length - 1; k >= 0; k--) {
+        let a = allies[k];
+        // Vérifier la collision entre le projectile et l'allié
+        if (p.collides(a)) {
+          // Supprimer l'allié et le projectile
+          a.remove();
+          allies.splice(k, 1);
+          p.remove();
+          projectiles.splice(i, 1);
+          // Perdre une vie
+          life--;
+          break; // Sortir de la boucle alliés
         }
       }
     }
