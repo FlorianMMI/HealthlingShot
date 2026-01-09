@@ -46,7 +46,7 @@ let modelsLoaded = false;
 
 
 // Variable de jeu
-let level = 3;
+let level = 4;
 let life = 1;
 let ennemies = [];
 let allies = [];
@@ -76,7 +76,11 @@ function preload() {
   rulesImg = loadImage('../assets/Rules.svg');
   // Page Settings
   settingsImg = loadImage('../assets/Settings.svg');
-  alliesImg = loadImage('../assets/Allie.svg');
+  alliesImg1 = loadImage('../assets/Allie.svg');
+  alliesImg2 = loadImage('../assets/lettuce_idle.svg');
+
+  // Tomato
+  tomatoImg = loadImage('../assets/tomato_idle.svg');
 
 }
 
@@ -239,6 +243,52 @@ function setupLevel3() {
   addAllies(width / 2 + 300, height - 200);
 }
 
+function setupLevel4() {
+
+  // Créer un château avec plusieurs étages
+  let centerX1 = width / 2 + 600;
+  let centerX2 = width / 2 + 200;
+  let baseY = height - 295;
+
+  // Base: 2 piliers verticaux
+  boisSprites.push(setBoisVertical(centerX1 - 79, baseY));
+  boisSprites.push(setBoisVertical(centerX1 + 79, baseY));
+  boisSprites.push(setBoisHorizontal(centerX1, baseY - 80));
+
+    // Base: 2 piliers verticaux
+    boisSprites.push(setBoisVertical(centerX2 - 79, baseY));
+    boisSprites.push(setBoisVertical(centerX2 + 79, baseY));
+    boisSprites.push(setBoisHorizontal(centerX2, baseY - 80));
+
+  // Rajout de l'énemies
+  addEnemies(centerX1, height - 400);
+  addEnemies(centerX2, height - 400);
+  addAllies(centerX1, height - 200);
+  addAllies(centerX2, height - 200);
+}
+
+function setupLevel5() {
+
+  // Créer un château avec plusieurs étages
+  let centerX = width / 2 + 500;
+  let baseY = height - 295;
+
+  // Base: 2 piliers verticaux
+  boisSprites.push(setBoisVertical(centerX-300, baseY));
+  boisSprites.push(setBoisVertical(centerX+300, baseY));
+
+  boisSprites.push(setBoisVertical(centerX, baseY));
+  boisSprites.push(setBoisVertical(centerX, baseY-175));
+  boisSprites.push(setBoisHorizontal(centerX, baseY-250));
+
+
+  // Rajout de l'énemies
+  addEnemies(centerX+50, height-600);
+  addEnemies(centerX-50, height-600);
+  addEnemies(centerX, height-750);
+  addAllies(centerX-100, height - 200);
+  addAllies(centerX+100, height - 200);
+}
 
 function addEnemies(x, y) {
   // Ajouter des ennemis (cercles rouges) sur le château
@@ -261,10 +311,13 @@ function addAllies(x, y) {
   let ally = new Sprite(x, y, 150, 150);
   ally.scale = 0.5;
   ally.color = color(0, 255, 0);
-  ally.img = alliesImg;
+  // Assigner une image aléatoire à l'allié
+  let randomImg = random([alliesImg1, alliesImg2]);
+  ally.img = randomImg;
   ally.mass = 1;
   allies.push(ally);
 }
+
 
 
 
@@ -745,9 +798,8 @@ function shoot() {
         // Créer le projectile comme sprite p5play
         let projectile = new Sprite(cannonPos.x, cannonPos.y, 15);
         projectile.mass = 2;
-        projectile.color = color(255, 100, 0);
-        projectile.vel.x = direction.x * powerCoef;
-        projectile.vel.y = direction.y * powerCoef;
+        projectile.img = ammoImg;
+        projectile.scale = 0.1;
         projectile.life = 800; // Durée de vie en frames
         projectile.layer = 6;
 
@@ -850,6 +902,16 @@ function updateLevel() {
 
   if (level === 3 && !levelStarted) {
     setupLevel3();
+    levelStarted = true;
+  }
+
+  if (level === 4 && !levelStarted) {
+    setupLevel4();
+    levelStarted = true;
+  }
+
+  if (level === 5 && !levelStarted) {
+    setupLevel5();
     levelStarted = true;
   }
 }
