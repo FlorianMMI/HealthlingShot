@@ -44,9 +44,9 @@ let handPose;
 let hands = [];
 let modelsLoaded = false;
 
-
+ 
 // Variable de jeu
-let level = 4;
+let level = 1;
 let life = 1;
 let ennemies = [];
 let allies = [];
@@ -103,7 +103,7 @@ function setup() {
   hit1.color = color(0, 0, 0, 0); // invisible
   hit1.stroke = color(0, 0, 0, 0);
 
-  let hit3 = new Sprite(width / 2 + 1000, height / 2 + 250, 90, 1000, 'static');
+  let hit3 = new Sprite(width / 2 + 1000, height / 2 + 250, 95, 1000, 'static');
   hit3.debug = true;
   hit3.color = color(0, 0, 0); // invisible
   hit3.stroke = color(0, 0, 0, 0);
@@ -334,9 +334,9 @@ function mousePressed() {
     if (mouseX > buttonX && mouseX < buttonX + buttonW &&
         mouseY > buttonY && mouseY < buttonY + buttonH) {
       // Réinitialiser le jeu
-      life = 3;
+      life = 1;
       level = 1;
-      squatCount = 10;
+      squatCount = 0;
       totalSquats = 0;
       enemiesKilled = 0;
       gameOver = false;
@@ -801,7 +801,9 @@ function shoot() {
         let projectile = new Sprite(cannonPos.x, cannonPos.y, 15);
         projectile.mass = 2;
         projectile.img = ammoImg;
-        projectile.scale = 0.1;
+        projectile.scale = 0.3;
+        projectile.vel.x = direction.x * powerCoef;
+        projectile.vel.y = direction.y * powerCoef;
         projectile.life = 800; // Durée de vie en frames
         projectile.layer = 6;
 
