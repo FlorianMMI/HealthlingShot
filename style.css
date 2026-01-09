@@ -345,9 +345,8 @@ nav a:hover {
     top: -61px;
     left: 50%;
     transform: translateX(-50%);
-    width: 151px;
-    height: 151px;
-    background-color: #D9D9D9;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
 }
 
