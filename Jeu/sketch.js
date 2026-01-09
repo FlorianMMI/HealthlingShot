@@ -61,7 +61,7 @@ function preload() {
   handPose = ml5.handPose({ flipped: false });
   // Charger l'image SVG du bois
   boisImg = loadImage('../assets/bois.svg');
-  ammoImg = loadImage('../assets/picon_ammo.svg');
+  ammoImg = loadImage('../assets/tomato_idle.svg');
   // Ciel. Tu m'avais pas dit qu'elle puait la merde.
   bgImg = loadImage('../assets/background.svg');
   // Sol ///////////////////////////////////////////////////////////////////////////////////////////////
