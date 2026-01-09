@@ -99,8 +99,9 @@ function setup() {
   hit1.color = color(0, 0, 0, 0); // invisible
   hit1.stroke = color(0, 0, 0, 0);
 
-  let hit3 = new Sprite(width / 2 + 1000, height / 2 + 250, 80, 1000, 'static');
-  hit3.color = color(0, 0, 0, 0); // invisible
+  let hit3 = new Sprite(width / 2 + 1000, height / 2 + 250, 90, 1000, 'static');
+  hit3.debug = true;
+  hit3.color = color(0, 0, 0); // invisible
   hit3.stroke = color(0, 0, 0, 0);
   
 
@@ -432,6 +433,7 @@ function drawPlayButton() {
   imageMode(CORNER);
   image(playButtonImg, 0, 0, width, height);
   
+  
   // DEBUG: Afficher les zones de clic (commenté)
   /*
   noFill();
@@ -444,7 +446,7 @@ function drawPlayButton() {
   // Zone Settings
   rect(width * 0.50, height * 0.59, width * 0.16, height * 0.072);
   
-  // Afficher les coordonnées de la souris
+   Afficher les coordonnées de la souris
   fill(255);
   noStroke();
   textSize(16);
