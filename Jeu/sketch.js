@@ -12,7 +12,7 @@ let poses = [];
 let connections;
 let previousPose = null;
 let squatInProgress = false;
-let squatCount = 10; // Nombre de squats effectués
+let squatCount = 1000; // Nombre de squats effectués
 let minHipY = 999999; // Pour suivre la position la plus basse
 let maxHipY = 0; // Pour suivre la position la plus haute
 let squatStartTime = 0; // Pour tracker le temps de la descente
@@ -28,6 +28,8 @@ let boisSprites = []; // Tableau de tous les sprites de bois
 let boisImg; // Image SVG du bois
 let enemyImg; // Image de l'ennemi
 let alliesImg; // Image de l'allié
+let enemy2Img; // Image du deuxième type d'ennemi
+let enemy3Img; // Image du troisième type d'ennemi
 
 // Variables pour la détection de main
 let handPose;
@@ -40,6 +42,9 @@ let level = 3;
 let life = 1;
 let ennemies = [];
 let allies = [];
+let totalSquats = 0; // Total de squats effectués dans la partie
+let enemiesKilled = 0; // Total d'ennemis tués
+let gameOver = false;
 
 function preload() {
   // Load the bodyPose model
@@ -56,6 +61,7 @@ function preload() {
   // Fronde
   frondeImg = loadImage('../assets/fronde.svg');
   enemyImg = loadImage('../assets/Saucisson.svg');
+  enemy3Img = loadImage('../assets/burger.svg');
   alliesImg = loadImage('../assets/Allie.svg');
 
 }
@@ -201,7 +207,12 @@ function addEnemies(x, y) {
   let enemy = new Sprite(x, y, 150, 150);
   enemy.scale = 0.7;
   enemy.color = color(255, 0, 0);
-  enemy.img = enemyImg;
+  let rand = random(1);
+  if (rand < 0.50) {
+    enemy.img = enemyImg;
+  } else {
+    enemy.img = enemy3Img;
+  }
   enemy.mass = 1;
   ennemies.push(enemy);
 }
@@ -242,6 +253,12 @@ function draw() {
     textSize(32);
     textAlign(CENTER);
     text("Chargement des modèles...", width / 2, height / 2);
+    return;
+  }
+
+  // Afficher l'écran game over si la vie est à 0
+  if (life <= 0 || gameOver) {
+    drawGameOver();
     return;
   }
 
@@ -406,6 +423,7 @@ function squatDetected() {
           // Vérifier qu'on remonte après être descendu
           if (avgHipY < minHipY - 20) { // Remontée d'au moins 20 pixels
             squatCount++;
+            totalSquats++; // Incrémenter le total de squats
             squatInProgress = false;
             maxHipY = avgHipY; // Réinitialiser la position haute
 
@@ -459,15 +477,36 @@ function drawCannon() {
       handX = constrain(handX, 0, width);
       handY = constrain(handY, 0, height);
 
+      // Calculer la distance et la puissance
+      let distance = dist(cannonPos.x, cannonPos.y, handX, handY);
+      let clampedDist = min(distance, 400);
+      let power = map(clampedDist, 50, 400, 2, 15);
+      
+      // Mapper la puissance pour les visuels (2-15 -> 0-1)
+      let powerRatio = map(power, 2, 15, 0, 1);
+      
+      // Couleur qui change selon la puissance (vert faible -> jaune -> rouge fort)
+      let r = map(powerRatio, 0, 1, 100, 255);
+      let g = map(powerRatio, 0, 1, 255, 50);
+      let b = 0;
+      
+      // Épaisseur qui augmente avec la puissance (2 -> 8)
+      let thickness = map(powerRatio, 0, 1, 2, 8);
+
+      // Dessiner ligne en pointillés entre fronde et main
+      drawingContext.setLineDash([10, 15]); // [longueur trait, longueur espace]
+      stroke(r, g, b, 200); // Couleur dynamique selon puissance
+      strokeWeight(thickness);
+      line(cannonPos.x, cannonPos.y, handX, handY);
+      drawingContext.setLineDash([]); // Réinitialiser pour les autres dessins
+
       // Dessiner UN SEUL point vert pour visualiser la main
       fill(0, 255, 0);
       noStroke();
       circle(handX, handY, 25);
 
       // Afficher la distance et la puissance (avec fond pour visibilité)
-      let distance = dist(cannonPos.x, cannonPos.y, handX, handY);
-      let clampedDist = min(distance, 300);
-      let power = map(clampedDist, 50, 300, 5, 20);
+      // (clampedDist et power déjà calculés plus haut)
 
       // Fond semi-transparent pour les textes
       fill(0, 0, 0, 150);
@@ -564,6 +603,7 @@ function updateProjectiles() {
           // Supprimer l'ennemi et le projectile
           e.remove();
           ennemies.splice(j, 1);
+          enemiesKilled++; // Incrémenter le compteur d'ennemis tués
           p.remove();
           projectiles.splice(i, 1);
           break; // Sortir de la boucle ennemis
@@ -610,6 +650,8 @@ function updateLevel() {
     boisSprites = [];
     projectiles.forEach(p => p.remove());
     projectiles = [];
+    allies.forEach(a => a.remove());
+    allies = [];
     level++;
     levelStarted = false;
   }
@@ -628,9 +670,116 @@ function updateLevel() {
     setupLevel3();
     levelStarted = true;
   }
+}
 
+function drawGameOver() {
+  // Dessiner le background
+  image(bgImg, 0, 0, width, height);
+  
+  // Overlay semi-transparent
+  fill(0, 0, 0, 150);
+  rect(0, 0, width, height);
+  
+  // Titre GAME OVER
+  fill(255);
+  textSize(80);
+  textAlign(CENTER);
+  textStyle(BOLD);
+  noStroke();
+  text("GAME OVER", width / 2, height / 2 - 150);
+  
+  // Calculer les calories
+  let calories = Math.round(totalSquats * 0.4);
+  
+  // Afficher les stats
+  textSize(28);
+  textStyle(NORMAL);
+  
+  // Colonne gauche
+  text("Squat numbers", width / 2 - 150, height / 2 - 50);
+  textSize(36);
+  textStyle(BOLD);
+  text(totalSquats, width / 2 - 150, height / 2 - 10);
+  
+  // Colonne droite
+  textSize(28);
+  textStyle(NORMAL);
+  text("Last level completed", width / 2 + 150, height / 2 - 50);
+  textSize(36);
+  textStyle(BOLD);
+  text(level - 1, width / 2 + 150, height / 2 - 10);
+  
+  // Deuxième ligne - Colonne gauche
+  textSize(28);
+  textStyle(NORMAL);
+  text("Calories spent", width / 2 - 150, height / 2 + 70);
+  textSize(36);
+  textStyle(BOLD);
+  text(calories, width / 2 - 150, height / 2 + 110);
+  
+  // Deuxième ligne - Colonne droite
+  textSize(28);
+  textStyle(NORMAL);
+  text("Ennemies wasted", width / 2 + 150, height / 2 + 70);
+  textSize(36);
+  textStyle(BOLD);
+  text(enemiesKilled, width / 2 + 150, height / 2 + 110);
+  
+  // Bouton Play Again
+  let buttonW = 200;
+  let buttonH = 60;
+  let buttonX = width / 2 - buttonW / 2;
+  let buttonY = height / 2 + 180;
+  
+  // Vérifier si la souris est sur le bouton
+  let isHover = mouseX > buttonX && mouseX < buttonX + buttonW &&
+                mouseY > buttonY && mouseY < buttonY + buttonH;
+  
+  // Dessiner le bouton
+  if (isHover) {
+    fill(70, 130, 180, 200); // Bleu plus clair au survol
 
+  } else {
+    fill(70, 130, 180);
+  }
+  rect(buttonX, buttonY, buttonW, buttonH, 10);
+  
+  // Texte du bouton
+  fill(255);
+  textSize(24);
+  textStyle(NORMAL);
+  text("Play again", width / 2, buttonY + 38);
+}
 
-
+function mousePressed() {
+  // Vérifier si on clique sur le bouton Play Again
+  if (gameOver || life <= 0) {
+    let buttonW = 200;
+    let buttonH = 60;
+    let buttonX = width / 2 - buttonW / 2;
+    let buttonY = height / 2 + 180;
+    
+    if (mouseX > buttonX && mouseX < buttonX + buttonW &&
+        mouseY > buttonY && mouseY < buttonY + buttonH) {
+      // Réinitialiser le jeu
+      life = 3;
+      level = 1;
+      squatCount = 10;
+      totalSquats = 0;
+      enemiesKilled = 0;
+      gameOver = false;
+      levelStarted = false;
+      
+      // Nettoyer tous les sprites
+      boisSprites.forEach(bois => bois.remove());
+      boisSprites = [];
+      ennemies.forEach(e => e.remove());
+      ennemies = [];
+      allies.forEach(a => a.remove());
+      allies = [];
+      projectiles.forEach(p => p.remove());
+      projectiles = [];
+    }
+  }
 }
 
