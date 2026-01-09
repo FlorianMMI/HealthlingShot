@@ -85,11 +85,20 @@ nav a:hover {
     white-space: nowrap;
     text-decoration: none;
     display: inline-block;
+    margin-left: 20px;
 }
 
 .cta-button:hover {
     background-color: #6a9e2a;
     text-decoration: none;
+}
+
+.repo-button {
+    background-color: #C46555;
+}
+
+.repo-button:hover {
+    background-color: #cc8073;
 }
 
 .header-line {
